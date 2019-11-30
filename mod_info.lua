@@ -1,0 +1,17 @@
+name = "Future Battlefield Pack (F.B.P.) Elite ACUs"
+uid = "5t3edt-btz6-9438-h6ui-9287zt47fab"
+version = 1.0
+copyright = "Copyright © 2019, CDRMV (aka CDR Deadalus)"
+description = "FAF Version 1.0 'Future Battlefield Pack Elite ACUs' is a Submod for F.B.P. It adds an fully new designed Building and three new ACU Classes into the Game."
+author = "CDRMV (aka CDR Deadalus)"
+url = "http://www.moddb.com/mods/fbp-future-battlefield-pack"
+icon = "/mods/Future Battlefield Pack Elite ACUs/Icon.png" 
+selectable = true
+enabled = true
+exclusive = false
+ui_only = false
+requires = { }
+requiresNames = { }
+conflicts = { }
+before = { }
+after = { }
