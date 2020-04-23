@@ -7,9 +7,6 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 local SLandFactoryUnit = import('/lua/seraphimunits.lua').SLandFactoryUnit
-XSB0305 = Class(SLandFactoryUnit) {
-
-    RollOffBones = { 'Pod01' },
-}
+XSB0305 = Class(SLandFactoryUnit) {}
 
 TypeClass = XSB0305

@@ -160,14 +160,14 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Secret',
-        UnitName = 'Construction Hall 245',
+        UnitName = 'Command Hangar',
         UnitWeight = 1,
     },
     Intel = {
         VisionRadius = 20,
     },
     Interface = {
-        HelpText = 'ACU-Headquarters',
+        HelpText = '<LOC Unit_Description_UEB0305>ACU-Headquarters',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 2.1,

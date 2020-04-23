@@ -160,14 +160,14 @@ UnitBlueprint {
         Icon = 'land',
         SelectionPriority = 5,
         TechLevel = 'RULEUTL_Secret',
-        UnitName = 'Master-Hub X350',
+        UnitName = 'Master-Hub',
         UnitWeight = 1,
     },
     Intel = {
         VisionRadius = 20,
     },
     Interface = {
-        HelpText = 'ACU-Headquarters',
+        HelpText = '<LOC Unit_Description_URB0305>ACU-Headquarters',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 2.1,

@@ -166,7 +166,7 @@ UnitBlueprint {
         VisionRadius = 20,
     },
     Interface = {
-        HelpText = 'ACU-Headquarters',
+        HelpText = '<LOC Unit_Description_XSB0305>ACU-Headquarters',
     },
     LifeBarHeight = 0.075,
     LifeBarOffset = 2.1,

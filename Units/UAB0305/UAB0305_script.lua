@@ -7,9 +7,6 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 local ALandFactoryUnit = import('/lua/aeonunits.lua').ALandFactoryUnit
-UAB0305 = Class(ALandFactoryUnit) {
-
-    RollOffBones = { 'Pod01' },
-}
+UAB0305 = Class(ALandFactoryUnit) {}
 
 TypeClass = UAB0305
