@@ -18,7 +18,9 @@ local TIFCruiseMissileLauncher = TerranWeaponFile.TIFCruiseMissileLauncher
 local TDFOverchargeWeapon = TerranWeaponFile.TDFOverchargeWeapon
 local TDFGaussCannonWeapon = TerranWeaponFile.TDFGaussCannonWeapon
 local TSAMLauncher = TerranWeaponFile.TSAMLauncher
+local TIFHighBallisticMortarWeapon = TerranWeaponFile.TIFHighBallisticMortarWeapon
 local TDFRiotWeapon = TerranWeaponFile.TDFRiotWeapon
+local TIFArtilleryWeapon = TerranWeaponFile.TIFArtilleryWeapon
 local EffectUtil = import('/lua/EffectUtilities.lua')
 local Buff = import('/lua/sim/Buff.lua')
 
@@ -30,6 +32,21 @@ UEL0002 = Class(TWalkingLandUnit) {
         DeathWeapon = Class(TIFCommanderDeathWeapon) {},
         Zephyr = Class(TDFZephyrCannonWeapon) {},
 		Missile_Pod = Class(TSAMLauncher) {}, 
+		Med_Artillery = Class(TIFArtilleryWeapon) {},
+		H_Artillery = Class(TIFArtilleryWeapon) {},
+		Light_Artillery = Class(TIFHighBallisticMortarWeapon) {  
+            CreateProjectileAtMuzzle = function(self, muzzle)
+                local proj = TIFHighBallisticMortarWeapon.CreateProjectileAtMuzzle(self, muzzle)
+                local data = {
+                        Radius = self:GetBlueprint().CameraVisionRadius or 5,
+                        Lifetime = self:GetBlueprint().CameraLifetime or 5,
+                        Army = self.unit:GetArmy(),
+                }
+                if proj and not proj:BeenDestroyed() then
+                        proj:PassData(data)
+                end
+            end,
+        },
 		Missile_Pod_Left = Class(TSAMLauncher) {}, 
 		Missile_Pod_Right = Class(TSAMLauncher) {}, 
 		GatlingGun = Class(TDFRiotWeapon) {
@@ -59,8 +76,28 @@ UEL0002 = Class(TWalkingLandUnit) {
                     TDFRiotWeapon.PlayFxWeaponPackSequence(self)
                 end,
 		},
+		BackGatlingGun = Class(TDFRiotWeapon) {
+                PlayFxWeaponUnpackSequence = function(self)
+                    if not self.SpinManip then 
+                        self.SpinManip = CreateRotator(self.unit, 'Gatling_Rotate', 'z', nil, -270, -180, -60)
+                        self.unit.Trash:Add(self.SpinManip)
+                    end
+                    if self.SpinManip then
+                        self.SpinManip:SetTargetSpeed(270)
+                    end
+                    TDFRiotWeapon.PlayFxWeaponUnpackSequence(self)
+                end,
+
+                PlayFxWeaponPackSequence = function(self)
+                    if self.SpinManip then
+                        self.SpinManip:SetTargetSpeed(0)
+                    end
+                    TDFRiotWeapon.PlayFxWeaponPackSequence(self)
+                end,
+		},
 		Heavy_Gauss_Left = Class(TDFGaussCannonWeapon) {},
 		Heavy_Gauss_Right = Class(TDFGaussCannonWeapon) {},
+		BackHeavy_Gauss = Class(TDFGaussCannonWeapon) {},
 		Light_Gauss = Class(TDFGaussCannonWeapon) {},
         OverCharge = Class(TDFOverchargeWeapon) {
 
@@ -152,6 +189,12 @@ UEL0002 = Class(TWalkingLandUnit) {
 		self:HideBone('Shield_Upgrade', true)
 		self:HideBone('Back_Upgrade_B01', true)
         self:HideBone('Back_Upgrade_B02', true)
+		self:HideBone('Back_Upgrade_B03', true)
+        self:HideBone('Back_Upgrade_B04', true)
+		self:HideBone('Back_Upgrade_B05', true)
+        self:HideBone('Back_Upgrade_B06', true)
+		self:HideBone('Left_Arm_Upgrade', true)
+        self:HideBone('Right_Arm_Upgrade', true)
         self:SetupBuildBones()
         self.HasLeftPod = false
         self.HasRightPod = false
@@ -221,6 +264,11 @@ UEL0002 = Class(TWalkingLandUnit) {
         self:SetWeaponEnabledByLabel('Zephyr', true)
 		self:SetWeaponEnabledByLabel('Heavy_Gauss_Right', false)
 		self:SetWeaponEnabledByLabel('Heavy_Gauss_Left', false)
+		self:SetWeaponEnabledByLabel('BackHeavy_Gauss', false)
+		self:SetWeaponEnabledByLabel('BackGatlingGun', false)
+		self:SetWeaponEnabledByLabel('Light_Artillery', false)
+		self:SetWeaponEnabledByLabel('Med_Artillery', false)
+		self:SetWeaponEnabledByLabel('H_Artillery', false)
 		self:SetWeaponEnabledByLabel('Missile_Pod_Left', false)
 		self:SetWeaponEnabledByLabel('Missile_Pod_Right', false)
 		self:SetWeaponEnabledByLabel('Missile_Pod', false)
@@ -250,6 +298,10 @@ UEL0002 = Class(TWalkingLandUnit) {
 		self:HideBone('Shield_Upgrade', true)
 		self:HideBone('Back_Upgrade_B01', true)
         self:HideBone('Back_Upgrade_B02', true)
+		self:HideBone('Back_Upgrade_B03', true)
+        self:HideBone('Back_Upgrade_B04', true)
+		self:HideBone('Back_Upgrade_B05', true)
+        self:HideBone('Back_Upgrade_B06', true)
         self:SetUnSelectable(false)
         self:SetBusy(false)
         self:SetBlockCommandQueue(false)
@@ -367,6 +419,30 @@ UEL0002 = Class(TWalkingLandUnit) {
             self:SetWeaponEnabledByLabel('Missile_Pod', true)
         elseif enh =='MissileBatteryRemove' then
             self:SetWeaponEnabledByLabel('Missile_Pod', false)
+		elseif enh =='Art_Mortar' then
+            self:SetWeaponEnabledByLabel('Light_Artillery', true)
+        elseif enh =='Art_MortarRemove' then
+            self:SetWeaponEnabledByLabel('Light_Artillery', false)
+		elseif enh =='H_Art_Mortar' then
+            self:SetWeaponEnabledByLabel('Light_Artillery', true)
+        elseif enh =='H_Art_MortarRemove' then
+            self:SetWeaponEnabledByLabel('Light_Artillery', false)
+		elseif enh =='Artillery' then
+            self:SetWeaponEnabledByLabel('Med_Artillery', true)
+        elseif enh =='ArtilleryRemove' then
+            self:SetWeaponEnabledByLabel('Med_Artillery', false)
+		elseif enh =='HeavyArtillery' then
+            self:SetWeaponEnabledByLabel('H_Artillery', true)
+        elseif enh =='HeavyArtilleryRemove' then
+            self:SetWeaponEnabledByLabel('H_Artillery', false)
+		elseif enh =='Back_Gatling' then
+            self:SetWeaponEnabledByLabel('BackGatlingGun', true)
+        elseif enh =='Back_GatlingRemove' then
+            self:SetWeaponEnabledByLabel('BackGatlingGun', false)
+		elseif enh =='Back_HeavyGauss' then
+            self:SetWeaponEnabledByLabel('BackHeavy_Gauss', true)
+        elseif enh =='Back_HeavyGaussRemove' then
+            self:SetWeaponEnabledByLabel('BackHeavy_Gauss', false)
         #ResourceAllocation              
         elseif enh =='TacticalMissile' then
             self:AddCommandCap('RULEUCC_Tactical')
