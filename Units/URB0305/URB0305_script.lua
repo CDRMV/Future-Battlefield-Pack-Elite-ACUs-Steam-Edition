@@ -7,6 +7,7 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 local CLandFactoryUnit = import('/lua/cybranunits.lua').CLandFactoryUnit
+
 URB0305 = Class(CLandFactoryUnit) {}
 
 TypeClass = URB0305

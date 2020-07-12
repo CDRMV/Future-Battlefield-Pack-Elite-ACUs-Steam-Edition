@@ -69,14 +69,6 @@ UnitBlueprint {
     },
     Description = 'ACU-Headquarters',
     Display = {
-        AnimationDeath = {
-            {
-                Animation = '/units/UAB4202/UAB4202_Adeath.sca',
-                AnimationRateMax = 1,
-                AnimationRateMin = 1,
-                Weight = 100,
-            },
-        },
         BuildAttachBone = 'Attachpoint',
         Mesh = {
             IconFadeInZoom = 130,

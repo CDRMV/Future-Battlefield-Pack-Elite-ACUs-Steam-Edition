@@ -9,6 +9,7 @@
 #****************************************************************************
 local CWalkingLandUnit = import('/lua/cybranunits.lua').CWalkingLandUnit
 local CWeapons = import('/lua/cybranweapons.lua')
+local TerranWeaponFile = import('/lua/terranweapons.lua')
 local EffectUtil = import('/lua/EffectUtilities.lua')
 local Buff = import('/lua/sim/Buff.lua')
 
@@ -21,11 +22,13 @@ local CDFParticleCannonWeapon = CWeapons.CDFParticleCannonWeapon
 local CDFLaserHeavyWeapon = CWeapons.CDFLaserHeavyWeapon
 local CANTorpedoLauncherWeapon = CWeapons.CANTorpedoLauncherWeapon
 local Entity = import('/lua/sim/Entity.lua').Entity
+local TIFCommanderDeathWeapon = TerranWeaponFile.TIFCommanderDeathWeapon
 
 URL0002 = Class(CWalkingLandUnit) {
     DeathThreadDestructionWaitTime = 2,
 
     Weapons = {
+	    DeathWeapon = Class(TIFCommanderDeathWeapon) {},
 		LaserCannons = Class(CDFLaserHeavyWeapon) {},
 	    MainGun = Class(CDFParticleCannonWeapon) {},
 	    LaserArms = Class(CDFLaserHeavyWeapon) {},
