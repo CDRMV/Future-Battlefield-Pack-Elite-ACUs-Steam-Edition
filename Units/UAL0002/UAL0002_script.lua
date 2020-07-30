@@ -17,6 +17,10 @@ local EffectTemplate = import('/lua/EffectTemplates.lua')
 local EffectUtil = import('/lua/EffectUtilities.lua')
 local ADFOverchargeWeapon = AWeapons.ADFOverchargeWeapon
 local ADFChronoDampener = AWeapons.ADFChronoDampener
+local ADFLaserLightWeapon = AWeapons.ADFLaserLightWeapon
+local ADFCannonOblivionWeapon = AWeapons.ADFCannonOblivionWeapon
+local ADFCannonQuantumWeapon = AWeapons.ADFCannonQuantumWeapon
+local AAAZealotMissileWeapon = AWeapons.AAAZealotMissileWeapon
 local Buff = import('/lua/sim/Buff.lua')
 
 UAL0002 = Class(AHoverLandUnit) {
@@ -24,6 +28,18 @@ UAL0002 = Class(AHoverLandUnit) {
     DeathThreadDestructionWaitTime = 2,
 
     Weapons = {
+	    ObliGun = Class(ADFCannonOblivionWeapon) {},
+		R_ObliGun = Class(ADFCannonOblivionWeapon) {},
+		L_ObliGun = Class(ADFCannonOblivionWeapon) {},
+		Missile = Class(AAAZealotMissileWeapon) {},
+		R_Missile = Class(AAAZealotMissileWeapon) {},
+		L_Missile = Class(AAAZealotMissileWeapon) {},
+		Laser = Class(ADFLaserLightWeapon) {},
+		R_Laser = Class(ADFLaserLightWeapon) {},
+		L_Laser = Class(ADFLaserLightWeapon) {},
+		QRailGun = Class(ADFCannonQuantumWeapon) {},
+		R_QRailGun = Class(ADFCannonQuantumWeapon) {},
+		L_QRailGun = Class(ADFCannonQuantumWeapon) {},
         DeathWeapon = Class(AIFCommanderDeathWeapon) {},
         RightDisruptor = Class(ADFDisruptorCannonWeapon) {},
         ChronoDampener = Class(ADFChronoDampener) {},
@@ -169,6 +185,18 @@ UAL0002 = Class(AHoverLandUnit) {
 		self.Rotator2 = CreateRotator(self, 'Engine_Spinner', 'y', nil, -10, -5, -10)
         self.Trash:Add(self.Rotator2)
         self:SetWeaponEnabledByLabel('RightDisruptor', true)
+		self:SetWeaponEnabledByLabel('ObliGun', false)
+		self:SetWeaponEnabledByLabel('Laser', false)
+		self:SetWeaponEnabledByLabel('R_Laser', false)
+		self:SetWeaponEnabledByLabel('L_Laser', false)
+		self:SetWeaponEnabledByLabel('Missile', false)
+		self:SetWeaponEnabledByLabel('R_Missile', false)
+		self:SetWeaponEnabledByLabel('L_Missile', false)
+		self:SetWeaponEnabledByLabel('QRailGun', false)
+		self:SetWeaponEnabledByLabel('R_ObliGun', false)
+		self:SetWeaponEnabledByLabel('L_ObliGun', false)
+		self:SetWeaponEnabledByLabel('R_QRailGun', false)
+		self:SetWeaponEnabledByLabel('L_QRailGun', false)
         self:ForkThread(self.GiveInitialResources)
     end,
 
@@ -334,6 +362,66 @@ UAL0002 = Class(AHoverLandUnit) {
             local bpIntel = self:GetBlueprint().Intel
             self:SetIntelRadius('Vision', bpIntel.VisionRadius or 26)
             self:SetIntelRadius('Omni', bpIntel.OmniRadius or 26)
+		elseif enh == 'Oblivion' then
+            self:SetWeaponEnabledByLabel('ObliGun', true)
+        elseif enh == 'OblivionRemove' then
+            self:SetWeaponEnabledByLabel('ObliGun', false)
+		elseif enh == 'Left_Oblivion' then
+            self:SetWeaponEnabledByLabel('L_ObliGun', true)
+        elseif enh == 'Left_OblivionRemove' then
+            self:SetWeaponEnabledByLabel('L_ObliGun', false)
+		elseif enh == 'Right_Oblivion' then
+            self:SetWeaponEnabledByLabel('R_ObliGun', true)
+        elseif enh == 'Right_OblivionRemove' then
+            self:SetWeaponEnabledByLabel('R_ObliGun', false)
+		elseif enh == 'Railgun' then
+            self:SetWeaponEnabledByLabel('QRailGun', true)
+        elseif enh == 'RailgunRemove' then
+            self:SetWeaponEnabledByLabel('QRailGun', false)
+		elseif enh == 'Left_Railgun' then
+            self:SetWeaponEnabledByLabel('L_QRailGun', true)
+        elseif enh == 'Left_RailgunRemove' then
+            self:SetWeaponEnabledByLabel('L_QRailGun', false)
+		elseif enh == 'Right_Railgun' then
+            self:SetWeaponEnabledByLabel('R_QRailGun', true)
+        elseif enh == 'Right_RailgunRemove' then
+            self:SetWeaponEnabledByLabel('R_QRailGun', false)
+		elseif enh == 'Laser_System' then
+            self:SetWeaponEnabledByLabel('Laser', true)
+        elseif enh == 'Laser_SystemRemove' then
+            self:SetWeaponEnabledByLabel('Laser', false)
+		elseif enh == 'Right_Laser_System' then
+            self:SetWeaponEnabledByLabel('R_Laser', true)
+        elseif enh == 'Right_Laser_SystemRemove' then
+            self:SetWeaponEnabledByLabel('R_Laser', false)
+		elseif enh == 'Left_Laser_System' then
+            self:SetWeaponEnabledByLabel('L_Laser', true)
+        elseif enh == 'Left_Laser_SystemRemove' then
+            self:SetWeaponEnabledByLabel('L_Laser', false)
+		elseif enh == 'Laser_System2' then
+            self:SetWeaponEnabledByLabel('Laser', true)
+        elseif enh == 'Laser_System2Remove' then
+            self:SetWeaponEnabledByLabel('Laser', false)
+		elseif enh == 'Right_Laser_System2' then
+            self:SetWeaponEnabledByLabel('R_Laser', true)
+        elseif enh == 'Right_Laser_System2Remove' then
+            self:SetWeaponEnabledByLabel('R_Laser', false)
+		elseif enh == 'Left_Laser_System2' then
+            self:SetWeaponEnabledByLabel('L_Laser', true)
+        elseif enh == 'Left_Laser_System2Remove' then
+            self:SetWeaponEnabledByLabel('L_Laser', false)
+		elseif enh == 'Missilepod' then
+            self:SetWeaponEnabledByLabel('Missile', true)
+        elseif enh == 'MissilepodRemove' then
+            self:SetWeaponEnabledByLabel('Missile', false)
+		elseif enh == 'Left_Missilepod' then
+            self:SetWeaponEnabledByLabel('L_Missile', true)
+        elseif enh == 'Left_MissilepodRemove' then
+            self:SetWeaponEnabledByLabel('L_Missile', false)
+		elseif enh == 'Right_Missilepod' then
+            self:SetWeaponEnabledByLabel('R_Missile', true)
+        elseif enh == 'Right_MissilepodRemove' then
+            self:SetWeaponEnabledByLabel('R_Missile', false)
         end
     end,
 
