@@ -1,5 +1,41 @@
 UnitBlueprint {
     Merge = true,
+	BlueprintId="uel0301",
+	
+    Categories = {
+		'BUILTBYACUHQ',
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="url0301",
+	
+    Categories = {
+		'BUILTBYACUHQ',
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="ual0301",
+	
+    Categories = {
+		'BUILTBYACUHQ',
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="xsl0301",
+	
+    Categories = {
+		'BUILTBYACUHQ',
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
 	BlueprintId="xsl0001",
 	
     Categories = {
@@ -8,8 +44,8 @@ UnitBlueprint {
 	
 	Economy = {
         BuildCostEnergy = 234000,
-        BuildCostMass = 46000,
-        BuildTime = 50000,
+        BuildCostMass = 10000,
+        BuildTime = 38000,
     },
 }
 
@@ -23,8 +59,8 @@ UnitBlueprint {
 	
 	Economy = {
         BuildCostEnergy = 234000,
-        BuildCostMass = 46000,
-        BuildTime = 50000,
+        BuildCostMass = 10000,
+        BuildTime = 38000,
     },
 }
 
@@ -38,8 +74,8 @@ UnitBlueprint {
 	
 	Economy = {
         BuildCostEnergy = 234000,
-        BuildCostMass = 46000,
-        BuildTime = 50000,
+        BuildCostMass = 10000,
+        BuildTime = 38000,
     },
 }
 
@@ -53,8 +89,8 @@ UnitBlueprint {
 	
 	Economy = {
         BuildCostEnergy = 234000,
-        BuildCostMass = 46000,
-        BuildTime = 50000,
+        BuildCostMass = 10000,
+        BuildTime = 38000,
     },
 }
 
@@ -69,9 +105,9 @@ UnitBlueprint {
     Description = '<LOC uel0001_desc>Elite Armored Command Unit',
 	
 	Economy = {
-        BuildCostEnergy = 5000000,
-        BuildCostMass = 18000,
-        BuildTime = 60000,
+        BuildCostEnergy = 400000,
+        BuildCostMass = 20000,
+        BuildTime = 50000,
     },
 }
 
@@ -86,8 +122,8 @@ UnitBlueprint {
     Description = '<LOC ual0001_desc>Elite Armored Command Unit',
 	
 	Economy = {
-        BuildCostEnergy = 5000000,
-        BuildCostMass = 18000,
-        BuildTime = 60000,
+        BuildCostEnergy = 400000,
+        BuildCostMass = 20000,
+        BuildTime = 50000,
     },
 }
