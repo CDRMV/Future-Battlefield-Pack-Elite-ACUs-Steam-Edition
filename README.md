@@ -9,8 +9,10 @@ Install Instructions:
 5) Activate the Mod in the Mod manager 
 6) Enjoy 
 
-Todos: 
+Todos before first Release: 
 - Add Missing Icons
 - Replace few Icons with new ones
 - Add AI Support
 - Balance 
+
+
