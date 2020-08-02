@@ -34,7 +34,20 @@ UEL0002 = Class(TWalkingLandUnit) {
 		Missile_Pod = Class(TSAMLauncher) {}, 
 		Med_Artillery = Class(TIFArtilleryWeapon) {},
 		H_Artillery = Class(TIFArtilleryWeapon) {},
-		Light_Artillery = Class(TIFHighBallisticMortarWeapon) {  
+		R_Light_Artillery = Class(TIFHighBallisticMortarWeapon) {  
+            CreateProjectileAtMuzzle = function(self, muzzle)
+                local proj = TIFHighBallisticMortarWeapon.CreateProjectileAtMuzzle(self, muzzle)
+                local data = {
+                        Radius = self:GetBlueprint().CameraVisionRadius or 5,
+                        Lifetime = self:GetBlueprint().CameraLifetime or 5,
+                        Army = self.unit:GetArmy(),
+                }
+                if proj and not proj:BeenDestroyed() then
+                        proj:PassData(data)
+                end
+            end,
+        },
+		L_Light_Artillery = Class(TIFHighBallisticMortarWeapon) {  
             CreateProjectileAtMuzzle = function(self, muzzle)
                 local proj = TIFHighBallisticMortarWeapon.CreateProjectileAtMuzzle(self, muzzle)
                 local data = {
@@ -266,7 +279,8 @@ UEL0002 = Class(TWalkingLandUnit) {
 		self:SetWeaponEnabledByLabel('Heavy_Gauss_Left', false)
 		self:SetWeaponEnabledByLabel('BackHeavy_Gauss', false)
 		self:SetWeaponEnabledByLabel('BackGatlingGun', false)
-		self:SetWeaponEnabledByLabel('Light_Artillery', false)
+		self:SetWeaponEnabledByLabel('R_Light_Artillery', false)
+		self:SetWeaponEnabledByLabel('L_Light_Artillery', false)
 		self:SetWeaponEnabledByLabel('Med_Artillery', false)
 		self:SetWeaponEnabledByLabel('H_Artillery', false)
 		self:SetWeaponEnabledByLabel('Missile_Pod_Left', false)
@@ -420,13 +434,17 @@ UEL0002 = Class(TWalkingLandUnit) {
         elseif enh =='MissileBatteryRemove' then
             self:SetWeaponEnabledByLabel('Missile_Pod', false)
 		elseif enh =='Art_Mortar' then
-            self:SetWeaponEnabledByLabel('Light_Artillery', true)
+            self:SetWeaponEnabledByLabel('R_Light_Artillery', true)
+			self:SetWeaponEnabledByLabel('L_Light_Artillery', true)
         elseif enh =='Art_MortarRemove' then
-            self:SetWeaponEnabledByLabel('Light_Artillery', false)
+            self:SetWeaponEnabledByLabel('R_Light_Artillery', false)
+			self:SetWeaponEnabledByLabel('L_Light_Artillery', false)
 		elseif enh =='H_Art_Mortar' then
-            self:SetWeaponEnabledByLabel('Light_Artillery', true)
+            self:SetWeaponEnabledByLabel('R_Light_Artillery', true)
+			self:SetWeaponEnabledByLabel('L_Light_Artillery', true)
         elseif enh =='H_Art_MortarRemove' then
-            self:SetWeaponEnabledByLabel('Light_Artillery', false)
+            self:SetWeaponEnabledByLabel('R_Light_Artillery', false)
+			self:SetWeaponEnabledByLabel('L_Light_Artillery', false)
 		elseif enh =='Artillery' then
             self:SetWeaponEnabledByLabel('Med_Artillery', true)
         elseif enh =='ArtilleryRemove' then
@@ -445,16 +463,9 @@ UEL0002 = Class(TWalkingLandUnit) {
             self:SetWeaponEnabledByLabel('BackHeavy_Gauss', false)
         #ResourceAllocation              
         elseif enh =='TacticalMissile' then
-            self:AddCommandCap('RULEUCC_Tactical')
-            self:AddCommandCap('RULEUCC_SiloBuildTactical')
             self:SetWeaponEnabledByLabel('TacMissile', true)
         elseif enh == 'TacticalMissileRemove' then
-            self:RemoveCommandCap('RULEUCC_Tactical')
-            self:RemoveCommandCap('RULEUCC_SiloBuildTactical')
             self:SetWeaponEnabledByLabel('TacMissile', false)
-            local amt = self:GetTacticalSiloAmmoCount()
-            self:RemoveTacticalSiloAmmo(amt or 0)
-            self:StopSiloBuild()
         end
     end,
     

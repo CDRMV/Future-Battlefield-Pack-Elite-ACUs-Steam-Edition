@@ -15,18 +15,28 @@ local SWeapons = import('/lua/seraphimweapons.lua')
 local AWeapons = import('/lua/aeonweapons.lua')
 local SDFChronotronCannonWeapon = SWeapons.SDFChronotronCannonWeapon
 local SDFChronotronOverChargeCannonWeapon = SWeapons.SDFChronotronCannonOverChargeWeapon
-local AIFCommanderDeathWeapon = AWeapons.AIFCommanderDeathWeapon
+local SIFCommanderDeathWeapon = SWeapons.SIFCommanderDeathWeapon
 local EffectTemplate = import('/lua/EffectTemplates.lua')
 local EffectUtil = import('/lua/EffectUtilities.lua')
 local SIFLaanseTacticalMissileLauncher = SWeapons.SIFLaanseTacticalMissileLauncher
+local SDFOhCannon = SWeapons.SDFOhCannon
+local SIFZthuthaamArtilleryCannon = SWeapons.SIFZthuthaamArtilleryCannon
+local SDFAireauBolterWeapon = SWeapons.SDFAireauBolterWeapon02
 local AIUtils = import('/lua/ai/aiutilities.lua')
 
 XSL0002 = Class( SWalkingLandUnit ) {
     DeathThreadDestructionWaitTime = 2,
 
     Weapons = {
-        DeathWeapon = Class(AIFCommanderDeathWeapon) {},
+        DeathWeapon = Class(SIFCommanderDeathWeapon) {},
         ChronotronCannon = Class(SDFChronotronCannonWeapon) {},
+		L_OhCannon = Class(SDFOhCannon) {},
+		R_OhCannon = Class(SDFOhCannon) {},
+		AireauBolter = Class(SDFAireauBolterWeapon) {},
+		L_AireauBolter = Class(SDFAireauBolterWeapon) {},
+		R_AireauBolter = Class(SDFAireauBolterWeapon) {},
+		R_ZthuthaamArt = Class(SIFZthuthaamArtilleryCannon) {},
+		L_ZthuthaamArt = Class(SIFZthuthaamArtilleryCannon) {},
         Missile = Class(SIFLaanseTacticalMissileLauncher) {
             OnCreate = function(self)
                 SIFLaanseTacticalMissileLauncher.OnCreate(self)
@@ -168,6 +178,14 @@ XSL0002 = Class( SWalkingLandUnit ) {
     OnStopBeingBuilt = function(self,builder,layer)
         SWalkingLandUnit.OnStopBeingBuilt(self,builder,layer)
         self:SetWeaponEnabledByLabel('ChronotronCannon', true)
+		self:SetWeaponEnabledByLabel('L_OhCannon', true)
+		self:SetWeaponEnabledByLabel('R_OhCannon', true)
+		self:SetWeaponEnabledByLabel('AireauBolter', false)
+		self:SetWeaponEnabledByLabel('L_AireauBolter', false)
+		self:SetWeaponEnabledByLabel('R_AireauBolter', false)
+		self:SetWeaponEnabledByLabel('R_ZthuthaamArt', false)
+		self:SetWeaponEnabledByLabel('L_ZthuthaamArt', false)
+		self:SetWeaponEnabledByLabel('Missile', false)
         self:ForkThread(self.GiveInitialResources)
         self.ShieldEffectsBag = {}
     end,
@@ -377,27 +395,6 @@ XSL0002 = Class( SWalkingLandUnit ) {
 		    end
             KillThread(self.AdvancedRegenThreadHandle)
             
-        #Resource Allocation
-        elseif enh == 'ResourceAllocation' then
-            local bp = self:GetBlueprint().Enhancements[enh]
-            local bpEcon = self:GetBlueprint().Economy
-            if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
-        elseif enh == 'ResourceAllocationRemove' then
-            local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
-        elseif enh == 'ResourceAllocationAdvanced' then
-            local bp = self:GetBlueprint().Enhancements[enh]
-            local bpEcon = self:GetBlueprint().Economy
-            if not bp then return end
-            self:SetProductionPerSecondEnergy(bp.ProductionPerSecondEnergy + bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bp.ProductionPerSecondMass + bpEcon.ProductionPerSecondMass or 0)
-        elseif enh == 'ResourceAllocationAdvancedRemove' then
-            local bpEcon = self:GetBlueprint().Economy
-            self:SetProductionPerSecondEnergy(bpEcon.ProductionPerSecondEnergy or 0)
-            self:SetProductionPerSecondMass(bpEcon.ProductionPerSecondMass or 0)
         #Damage Stabilization
         elseif enh == 'DamageStabilization' then
             if not Buffs['SeraphimACUDamageStabilization'] then
@@ -465,124 +462,75 @@ XSL0002 = Class( SWalkingLandUnit ) {
         elseif enh == 'TeleporterRemove' then
             self:RemoveCommandCap('RULEUCC_Teleport')
         # Tactical Missile
-        elseif enh == 'Missile' then
-            self:AddCommandCap('RULEUCC_Tactical')
-            self:AddCommandCap('RULEUCC_SiloBuildTactical')        
+        elseif enh == 'Missile' then     
             self:SetWeaponEnabledByLabel('Missile', true)
-        elseif enh == 'MissileRemove' then
-            self:RemoveCommandCap('RULEUCC_Tactical')
-            self:RemoveCommandCap('RULEUCC_SiloBuildTactical')        
+        elseif enh == 'MissileRemove' then    
             self:SetWeaponEnabledByLabel('Missile', false)
-        #T2 Engineering
-        elseif enh =='AdvancedEngineering' then
-            local bp = self:GetBlueprint().Enhancements[enh]
-            if not bp then return end
-            local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
-            self:RemoveBuildRestriction(cat)
-            if not Buffs['SeraphimACUT2BuildRate'] then
-                BuffBlueprint {
-                    Name = 'SeraphimACUT2BuildRate',
-                    DisplayName = 'SeraphimACUT2BuildRate',
-                    BuffType = 'ACUBUILDRATE',
-                    Stacks = 'REPLACE',
-                    Duration = -1,
-                    Affects = {
-                        BuildRate = {
-                            Add =  bp.NewBuildRate - self:GetBlueprint().Economy.BuildRate,
-                            Mult = 1,
-                        },
-                        MaxHealth = {
-                            Add = bp.NewHealth,
-                            Mult = 1.0,
-                        },
-                        Regen = {
-                            Add = bp.NewRegenRate,
-                            Mult = 1.0,
-                        },
-                    },
-                }
-            end
-            Buff.ApplyBuff(self, 'SeraphimACUT2BuildRate')
-        elseif enh =='AdvancedEngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
-            if not bp then return end
-            self:RestoreBuildRestrictions()
-            self:AddBuildRestriction( categories.SERAPHIM * (categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
-            if Buff.HasBuff( self, 'SeraphimACUT2BuildRate' ) then
-                Buff.RemoveBuff( self, 'SeraphimACUT2BuildRate' )
-            end
-        #T3 Engineering
-        elseif enh =='T3Engineering' then
-            local bp = self:GetBlueprint().Enhancements[enh]
-            if not bp then return end
-            local cat = ParseEntityCategory(bp.BuildableCategoryAdds)
-            self:RemoveBuildRestriction(cat)
-            if not Buffs['SeraphimACUT3BuildRate'] then
-                BuffBlueprint {
-                    Name = 'SeraphimACUT3BuildRate',
-                    DisplayName = 'SeraphimCUT3BuildRate',
-                    BuffType = 'ACUBUILDRATE',
-                    Stacks = 'REPLACE',
-                    Duration = -1,
-                    Affects = {
-                        BuildRate = {
-                            Add =  bp.NewBuildRate - self:GetBlueprint().Economy.BuildRate,
-                            Mult = 1,
-                        },
-                        MaxHealth = {
-                            Add = bp.NewHealth,
-                            Mult = 1.0,
-                        },
-                        Regen = {
-                            Add = bp.NewRegenRate,
-                            Mult = 1.0,
-                        },
-                    },
-                }
-            end
-            Buff.ApplyBuff(self, 'SeraphimACUT3BuildRate')
-        elseif enh =='T3EngineeringRemove' then
-            local bp = self:GetBlueprint().Economy.BuildRate
-            if not bp then return end
-            self:RestoreBuildRestrictions()
-            if Buff.HasBuff( self, 'SeraphimACUT3BuildRate' ) then
-                Buff.RemoveBuff( self, 'SeraphimACUT3BuildRate' )
-            end
-            self:AddBuildRestriction( categories.SERAPHIM * ( categories.BUILTBYTIER2COMMANDER + categories.BUILTBYTIER3COMMANDER) )
         #Blast Attack
-        elseif enh == 'BlastAttack' then
+        elseif enh == 'R_BlastAttack' then
             local wep = self:GetWeaponByLabel('ChronotronCannon')
             wep:AddDamageRadiusMod(bp.NewDamageRadius or 5)
             wep:AddDamageMod(bp.AdditionalDamage)
-        elseif enh == 'BlastAttackRemove' then
+        elseif enh == 'R_BlastAttackRemove' then
             local wep = self:GetWeaponByLabel('ChronotronCannon')
             wep:AddDamageRadiusMod(bp.NewDamageRadius or 5)
             wep:AddDamageMod(-self:GetBlueprint().Enhancements['BlastAttack'].AdditionalDamage)
         #Heat Sink Augmentation
-        elseif enh == 'RateOfFire' then
+        elseif enh == 'R_RateOfFire' then
             local wep = self:GetWeaponByLabel('ChronotronCannon')
             wep:ChangeRateOfFire(bp.NewRateOfFire or 2)
             wep:ChangeMaxRadius(bp.NewMaxRadius or 44)
             local oc = self:GetWeaponByLabel('OverCharge')
             oc:ChangeMaxRadius(bp.NewMaxRadius or 44)            
-        elseif enh == 'RateOfFireRemove' then
+        elseif enh == 'R_RateOfFireRemove' then
             local wep = self:GetWeaponByLabel('ChronotronCannon')
             local bpDisrupt = self:GetBlueprint().Weapon[1].RateOfFire
             wep:ChangeRateOfFire(bpDisrupt or 1)
             bpDisrupt = self:GetBlueprint().Weapon[1].MaxRadius            
             wep:ChangeMaxRadius(bpDisrupt or 22)
             local oc = self:GetWeaponByLabel('OverCharge')
-            oc:ChangeMaxRadius(bpDisrupt or 22)                        
-        # Remote Viewing system
-        #elseif enh == 'RemoteViewing' then
-        #    self.Sync.Abilities = {[bp.NewAbility] = self:GetBlueprint().Abilities[bp.NewAbility]}
-        #    self:SetEnergyMaintenanceConsumptionOverride(bp.MaintenanceConsumptionPerSecondEnergy or 0)
-        #    self:SetMaintenanceConsumptionInactive()
-        #    self:EnableRemoteViewingButtons()
-        #elseif enh == 'RemoteViewingRemove' then
-        #    self.Sync.Abilities = false
-        #    self.RemoteViewingData.VisibleLocation = false
-        #    self:DisableRemoteViewingButtons()
+            oc:ChangeMaxRadius(bpDisrupt or 22)     
+        elseif enh == 'L_BlastAttack' then
+            local wep = self:GetWeaponByLabel('ChronotronCannon')
+            wep:AddDamageRadiusMod(bp.NewDamageRadius or 5)
+            wep:AddDamageMod(bp.AdditionalDamage)
+        elseif enh == 'L_BlastAttackRemove' then
+            local wep = self:GetWeaponByLabel('ChronotronCannon')
+            wep:AddDamageRadiusMod(bp.NewDamageRadius or 5)
+            wep:AddDamageMod(-self:GetBlueprint().Enhancements['BlastAttack'].AdditionalDamage)
+        #Heat Sink Augmentation
+        elseif enh == 'L_RateOfFire' then
+            local wep = self:GetWeaponByLabel('ChronotronCannon')
+            wep:ChangeRateOfFire(bp.NewRateOfFire or 2)
+            wep:ChangeMaxRadius(bp.NewMaxRadius or 44)
+            local oc = self:GetWeaponByLabel('OverCharge')
+            oc:ChangeMaxRadius(bp.NewMaxRadius or 44)            
+        elseif enh == 'L_RateOfFireRemove' then
+            local wep = self:GetWeaponByLabel('ChronotronCannon')
+            local bpDisrupt = self:GetBlueprint().Weapon[1].RateOfFire
+            wep:ChangeRateOfFire(bpDisrupt or 1)
+            bpDisrupt = self:GetBlueprint().Weapon[1].MaxRadius            
+            wep:ChangeMaxRadius(bpDisrupt or 22)
+            local oc = self:GetWeaponByLabel('OverCharge')
+            oc:ChangeMaxRadius(bpDisrupt or 22) 
+        elseif enh == 'Artillery' then    
+            self:SetWeaponEnabledByLabel('R_ZthuthaamArt', true)
+			self:SetWeaponEnabledByLabel('L_ZthuthaamArt', true)
+        elseif enh == 'ArtilleryRemove' then     
+            self:SetWeaponEnabledByLabel('R_ZthuthaamArt', false) 
+			self:SetWeaponEnabledByLabel('L_ZthuthaamArt', false) 
+        elseif enh == 'BodyBolterGun' then    
+            self:SetWeaponEnabledByLabel('AireauBolter', true)
+        elseif enh == 'BodyBolterGunRemove' then     
+            self:SetWeaponEnabledByLabel('AireauBolter', false) 
+        elseif enh == 'L_BolterGun' then    
+            self:SetWeaponEnabledByLabel('L_AireauBolter', true)
+        elseif enh == 'L_BolterGunRemove' then     
+            self:SetWeaponEnabledByLabel('L_AireauBolter', false) 
+        elseif enh == 'R_BolterGun' then    
+            self:SetWeaponEnabledByLabel('R_AireauBolter', true)
+        elseif enh == 'R_BolterGunRemove' then     
+            self:SetWeaponEnabledByLabel('R_AireauBolter', false) 			
         end
     end,
 

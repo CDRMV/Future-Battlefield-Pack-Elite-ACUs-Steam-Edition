@@ -22,15 +22,46 @@ local CDFParticleCannonWeapon = CWeapons.CDFParticleCannonWeapon
 local CDFLaserHeavyWeapon = CWeapons.CDFLaserHeavyWeapon
 local CANTorpedoLauncherWeapon = CWeapons.CANTorpedoLauncherWeapon
 local Entity = import('/lua/sim/Entity.lua').Entity
-local TIFCommanderDeathWeapon = TerranWeaponFile.TIFCommanderDeathWeapon
+local CIFCommanderDeathWeapon = CWeapons.CIFCommanderDeathWeapon
+local CAAMissileNaniteWeapon = CWeapons.CAAMissileNaniteWeapon
+local CIFMissileLoaWeapon = CWeapons.CIFMissileLoaWeapon
+local CDFElectronBolterWeapon = CWeapons.CDFElectronBolterWeapon
+local CIFArtilleryWeapon = CWeapons.CIFArtilleryWeapon
 
 URL0002 = Class(CWalkingLandUnit) {
     DeathThreadDestructionWaitTime = 2,
 
     Weapons = {
-	    DeathWeapon = Class(TIFCommanderDeathWeapon) {},
-		LaserCannons = Class(CDFLaserHeavyWeapon) {},
-	    MainGun = Class(CDFParticleCannonWeapon) {},
+	    DeathWeapon = Class(CIFCommanderDeathWeapon) {},
+		R_LaserCannons = Class(CDFLaserHeavyWeapon) {},
+		L_LaserCannons = Class(CDFLaserHeavyWeapon) {},
+	    R_Laserbeam = Class(CDFParticleCannonWeapon) {},
+		L_Laserbeam = Class(CDFParticleCannonWeapon) {},
+		Nanite_Missile = Class(CAAMissileNaniteWeapon) {},
+		R_ElectBolter = Class(CDFElectronBolterWeapon) {},
+		L_ElectBolter = Class(CDFElectronBolterWeapon) {},
+		R_MArtillery = Class(CIFArtilleryWeapon) {
+            FxMuzzleFlash = {
+                '/effects/emitters/cybran_artillery_muzzle_flash_01_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_flash_02_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_smoke_01_emit.bp',
+            },
+        },
+		L_MArtillery = Class(CIFArtilleryWeapon) {
+            FxMuzzleFlash = {
+                '/effects/emitters/cybran_artillery_muzzle_flash_01_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_flash_02_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_smoke_01_emit.bp',
+            },
+        },
+		HArtillery = Class(CIFArtilleryWeapon) {
+            FxMuzzleFlash = {
+                '/effects/emitters/cybran_artillery_muzzle_flash_01_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_flash_02_emit.bp',
+                '/effects/emitters/cybran_artillery_muzzle_smoke_01_emit.bp',
+            },
+        },
+		Missile = Class(CIFMissileLoaWeapon) {},
 	    LaserArms = Class(CDFLaserHeavyWeapon) {},
         RightRipper = Class(CCannonMolecularWeapon) {},
         Torpedo = Class(CANTorpedoLauncherWeapon) {},
@@ -196,7 +227,17 @@ URL0002 = Class(CWalkingLandUnit) {
         CWalkingLandUnit.OnStopBeingBuilt(self,builder,layer)
         self:SetWeaponEnabledByLabel('RightRipper', true)
         self:SetWeaponEnabledByLabel('MLG', false)
-		self:SetWeaponEnabledByLabel('MainGun', false)
+		self:SetWeaponEnabledByLabel('R_Laserbeam', false)
+		self:SetWeaponEnabledByLabel('L_Laserbeam', false)
+		self:SetWeaponEnabledByLabel('R_LaserCannons', false)
+		self:SetWeaponEnabledByLabel('L_LaserCannons', false)
+		self:SetWeaponEnabledByLabel('R_ElectBolter', false)
+		self:SetWeaponEnabledByLabel('L_ElectBolter', false)
+		self:SetWeaponEnabledByLabel('Nanite_Missile', false)
+		self:SetWeaponEnabledByLabel('Missile', false)
+		self:SetWeaponEnabledByLabel('R_MArtillery', false)
+		self:SetWeaponEnabledByLabel('L_MArtillery', false)
+		self:SetWeaponEnabledByLabel('HArtillery', false)
         self:SetMaintenanceConsumptionInactive()
         self:DisableUnitIntel('RadarStealth')
         self:DisableUnitIntel('SonarStealth')
@@ -413,22 +454,50 @@ URL0002 = Class(CWalkingLandUnit) {
             local oc = self:GetWeaponByLabel('OverCharge')
             oc:ChangeMaxRadius(bpDisrupt or 22)            
         elseif enh == 'AdvancedLaserSystem' then
-			self:SetWeaponEnabledByLabel('MainGun', true)
+			self:SetWeaponEnabledByLabel('R_Laserbeam', true)
+			self:SetWeaponEnabledByLabel('L_Laserbeam', true)
         elseif enh == 'AdvancedLaserSystemRemove' then
-			self:SetWeaponEnabledByLabel('MainGun', false)
+			self:SetWeaponEnabledByLabel('R_Laserbeam', false)
+			self:SetWeaponEnabledByLabel('L_Laserbeam', false)
 		elseif enh == 'MicrowaveLaserGenerator' then
             self:SetWeaponEnabledByLabel('MLG', true)
         elseif enh == 'MicrowaveLaserGeneratorRemove' then
             self:SetWeaponEnabledByLabel('MLG', false)
 		elseif enh == 'LeftLaserGun' then
-            self:SetWeaponEnabledByLabel('LaserCannons', true)
+            self:SetWeaponEnabledByLabel('L_LaserCannons', true)
         elseif enh == 'LeftLaserGunRemove' then
-            self:SetWeaponEnabledByLabel('LaserCannons', false)
+            self:SetWeaponEnabledByLabel('L_LaserCannons', false)
 		elseif enh == 'RightLaserGun' then
-            self:SetWeaponEnabledByLabel('LaserCannons', true)
+            self:SetWeaponEnabledByLabel('R_LaserCannons', true)
         elseif enh == 'RightLaserGunRemove' then
-            self:SetWeaponEnabledByLabel('LaserCannons', false)
-        end             
+            self:SetWeaponEnabledByLabel('R_LaserCannons', false)
+		elseif enh == 'TML' then
+            self:SetWeaponEnabledByLabel('Missile', true)
+        elseif enh == 'TMLRemove' then
+            self:SetWeaponEnabledByLabel('Missile', false)  
+		elseif enh == 'NaniteMissileRack' then
+            self:SetWeaponEnabledByLabel('Nanite_Missile', true)
+        elseif enh == 'NaniteMissileRackRemove' then
+            self:SetWeaponEnabledByLabel('Nanite_Missile', false)
+		elseif enh == 'RightEB' then
+            self:SetWeaponEnabledByLabel('R_ElectBolter', true)
+        elseif enh == 'RightEBRemove' then
+            self:SetWeaponEnabledByLabel('R_ElectBolter', false)
+		elseif enh == 'LeftEB' then
+            self:SetWeaponEnabledByLabel('L_ElectBolter', true)
+        elseif enh == 'LeftEBRemove' then
+            self:SetWeaponEnabledByLabel('L_ElectBolter', false)
+		elseif enh == 'Artillery' then
+            self:SetWeaponEnabledByLabel('R_MArtillery', true)
+			self:SetWeaponEnabledByLabel('L_MArtillery', true)
+        elseif enh == 'ArtilleryRemove' then
+            self:SetWeaponEnabledByLabel('R_MArtillery', false)
+			self:SetWeaponEnabledByLabel('L_MArtillery', false)
+					elseif enh == 'HArtillery' then
+            self:SetWeaponEnabledByLabel('HArtillery', true)
+        elseif enh == 'HArtilleryRemove' then
+            self:SetWeaponEnabledByLabel('HArtillery', false)
+        end            
     end,
     
     # **********
@@ -438,13 +507,12 @@ URL0002 = Class(CWalkingLandUnit) {
 		Cloak = {
 		    {
 			    Bones = {
-				    'Head',
-				    'Right_Turret',
-				    'Left_Turret',
-				    'Right_Arm_B01',
-				    'Left_Arm_B01',
-				    'Chest_Right',
-				    'Chest_Left',
+				    'Torso',
+				    'R_Barrel',
+				    'L_Barrel',
+					'R_L_Barrel',
+				    'L_L_Barrel',
+				    'Center_Turret',
 				    'Left_Leg_B01',
 				    'Left_Leg_B02',
 				    'Left_Foot_B01',
@@ -459,13 +527,12 @@ URL0002 = Class(CWalkingLandUnit) {
 		Field = {
 		    {
 			    Bones = {
-				    'Head',
-				    'Right_Turret',
-				    'Left_Turret',
-				    'Right_Arm_B01',
-				    'Left_Arm_B01',
-				    'Chest_Right',
-				    'Chest_Left',
+				    'Torso',
+				    'R_Barrel',
+				    'L_Barrel',
+					'R_L_Barrel',
+				    'L_L_Barrel',
+				    'Center_Turret',
 				    'Left_Leg_B01',
 				    'Left_Leg_B02',
 				    'Left_Foot_B01',
