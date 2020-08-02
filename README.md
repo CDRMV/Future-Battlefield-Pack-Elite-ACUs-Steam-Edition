@@ -13,4 +13,4 @@ Todos:
 - Add Missing Icons
 - Replace few Icons with new ones
 - Add AI Support
-- Balance Test
+- Balance 
