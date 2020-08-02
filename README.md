@@ -11,6 +11,6 @@ Install Instructions:
 
 Todos: 
 - Add Missing Icons
-- replace few Icons with new ones
+- Replace few Icons with new ones
 - Add AI Support
 - Balance Test
