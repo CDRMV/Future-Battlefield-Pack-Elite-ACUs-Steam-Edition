@@ -8,3 +8,9 @@ Install Instructions:
 4) Rename the Folder Future-Battlefield-Pack-Elite-ACUs-Steam-Edition-master to Future Battlefield Pack Elite ACUs Steam Edition. 
 5) Activate the Mod in the Mod manager 
 6) Enjoy 
+
+Todos: 
+- Add Missing Icons
+- replace few Icons with new ones
+- Add AI Support
+- Balance Test
