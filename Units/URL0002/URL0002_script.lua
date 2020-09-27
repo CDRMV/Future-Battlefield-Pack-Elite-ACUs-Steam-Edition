@@ -613,3 +613,5 @@ URL0002 = Class(CWalkingLandUnit) {
 }   
     
 TypeClass = URL0002
+    
+TypeClass = URL0002
