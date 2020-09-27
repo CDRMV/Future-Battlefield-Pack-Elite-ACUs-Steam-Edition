@@ -1,4 +1,4 @@
-# Future-Battlefield-Pack-Elite-ACUs
+# Future Battlefield Pack Elite ACUs (Steam Edition)
 Addon for the Future Battlefield Pack Mod, which adds the ACU-HQ's and new ACU-Classes.
 
 Install Instructions:
@@ -8,3 +8,11 @@ Install Instructions:
 4) Rename the Folder Future-Battlefield-Pack-Elite-ACUs-Steam-Edition-master to Future Battlefield Pack Elite ACUs Steam Edition. 
 5) Activate the Mod in the Mod manager 
 6) Enjoy 
+
+Todos before first Release: 
+- Add Missing Icons
+- Replace few Icons with new ones
+- Add AI Support
+- Balance 
+
+
