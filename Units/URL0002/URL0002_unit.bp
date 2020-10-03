@@ -152,7 +152,7 @@ UnitBlueprint {
             '<LOC ability_omni>Omni Sensor',
             '<LOC ability_deathaoe>Volatile',
         },
-        AnimationWalk = '/mods/Future Battlefield Pack Elite ACUs FAF Edition/units/url0002/url0002_awalk02.sca',
+        AnimationWalk = '/mods/Future Battlefield Pack Elite ACUs Steam Edition/units/url0002/url0002_awalk02.sca',
         AnimationWalkRate = 1.0,
         IdleEffects = {
             Seabed = {
@@ -253,13 +253,13 @@ UnitBlueprint {
         SpawnRandomRotation = true,
         TransportAnimation = {
             {
-                Animation = '/mods/Future Battlefield Pack Elite ACUs FAF Edition/units/URL0002/URL0002_afold.sca',
+                Animation = '/mods/Future Battlefield Pack Elite ACUs Steam Edition/units/URL0002/URL0002_afold.sca',
                 Weight = 100,
             },
         },
         TransportDropAnimation = {
             {
-                Animation = '/units/URL0001/URL0001_aunfold.sca',
+                Animation = '/mods/Future Battlefield Pack Elite ACUs Steam Edition/units/URL0002/URL0002_aunfold.sca',
                 Weight = 100,
             },
         },
