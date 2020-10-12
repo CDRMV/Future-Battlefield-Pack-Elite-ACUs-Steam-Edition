@@ -1,6 +1,6 @@
 UnitBlueprint {
     Merge = true,
-	BlueprintId="uel0301",
+	BlueprintId="UEL0301",
 	
     Categories = {
 		'BUILTBYACUHQ',
@@ -9,7 +9,7 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="url0301",
+	BlueprintId="URL0301",
 	
     Categories = {
 		'BUILTBYACUHQ',
@@ -18,7 +18,7 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="ual0301",
+	BlueprintId="UAL0301",
 	
     Categories = {
 		'BUILTBYACUHQ',
@@ -27,7 +27,7 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="xsl0301",
+	BlueprintId="XSL0301",
 	
     Categories = {
 		'BUILTBYACUHQ',
@@ -36,10 +36,11 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="xsl0001",
+	BlueprintId="XSL0001",
 	
     Categories = {
 		'BUILTBYACUHQ',
+		'TECH3',
     },
 	
 	Economy = {
@@ -51,25 +52,11 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="ual0001",
+	BlueprintId="UAL0001",
 	
     Categories = {
 		'BUILTBYACUHQ',
-    },
-	
-	Economy = {
-        BuildCostEnergy = 234000,
-        BuildCostMass = 10000,
-        BuildTime = 38000,
-    },
-}
-
-UnitBlueprint {
-    Merge = true,
-	BlueprintId="url0001",
-
-    Categories = {
-		'BUILTBYACUHQ',
+		'TECH3',
     },
 	
 	Economy = {
@@ -81,10 +68,11 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="uel0001",
+	BlueprintId="URL0001",
 
     Categories = {
 		'BUILTBYACUHQ',
+		'TECH3',
     },
 	
 	Economy = {
@@ -96,10 +84,27 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="eel0001",
+	BlueprintId="UEL0001",
 
     Categories = {
 		'BUILTBYACUHQ',
+		'TECH3',
+    },
+	
+	Economy = {
+        BuildCostEnergy = 234000,
+        BuildCostMass = 10000,
+        BuildTime = 38000,
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="EEL0001",
+
+    Categories = {
+		'BUILTBYACUHQ',
+		'TECH3',
     },
 	
     Description = '<LOC uel0001_desc>Elite Armored Command Unit',
@@ -113,10 +118,47 @@ UnitBlueprint {
 
 UnitBlueprint {
     Merge = true,
-	BlueprintId="eal0001",
+	BlueprintId="EAL0001",
 
     Categories = {
 		'BUILTBYACUHQ',
+		'TECH3',
+    },
+	
+    Description = '<LOC ual0001_desc>Elite Armored Command Unit',
+	
+	Economy = {
+        BuildCostEnergy = 400000,
+        BuildCostMass = 20000,
+        BuildTime = 50000,
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="ERL0001",
+
+    Categories = {
+		'BUILTBYACUHQ',
+		'TECH3',
+    },
+	
+    Description = '<LOC ual0001_desc>Elite Armored Command Unit',
+	
+	Economy = {
+        BuildCostEnergy = 400000,
+        BuildCostMass = 20000,
+        BuildTime = 50000,
+    },
+}
+
+UnitBlueprint {
+    Merge = true,
+	BlueprintId="ESL0001",
+
+    Categories = {
+		'BUILTBYACUHQ',
+		'TECH3',
     },
 	
     Description = '<LOC ual0001_desc>Elite Armored Command Unit',

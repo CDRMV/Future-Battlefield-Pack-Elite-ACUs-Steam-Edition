@@ -29,7 +29,7 @@ UEL0002 = Class(TWalkingLandUnit) {
 
     Weapons = {
 		WeaponEnabled = {},
-        DeathWeapon = Class(DeathNukeWeapon) {},
+        DeathWeapon = Class(TIFCommanderDeathWeapon) {},
         Zephyr = Class(TDFZephyrCannonWeapon) {},
 		Missile_Pod = Class(TSAMLauncher) {}, 
 		Med_Artillery = Class(TIFArtilleryWeapon) {},
@@ -228,7 +228,7 @@ UEL0002 = Class(TWalkingLandUnit) {
     },
 
     OnCreate = function(self)
-        ACUUnit.OnCreate(self)
+        TWalkingLandUnit.OnCreate(self)
         self:SetCapturable(false)
         self:HideBone('Right_Upgrade', true)
         self:HideBone('Left_Upgrade', true)
@@ -524,7 +524,6 @@ UEL0002 = Class(TWalkingLandUnit) {
         TWalkingLandUnit.OnUnpaused(self)
     end,  
 
-}
 }
 
 TypeClass = UEL0002
